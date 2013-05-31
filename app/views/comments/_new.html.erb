@@ -1,0 +1,30 @@
+<hr/>
+<div id="newcomment">
+  <div style="<%= 'display:none;' unless @comment and !@comment.text.blank? %>">
+    <h2>Neuer Kommentar</h2>
+
+	  <p>Bitte beschreiben Sie hier Ihre eigenen Erfahrungen. Zum Schutz vor SPAM werden die Kommentare
+	     von einem Moderator manuell freigegeben. Es kann daher einen Moment dauern bis Ihr Beitrag auf der Webseite erscheint.
+	     Spätestens am folgenden Tag ist dieser für alle sichtbar. Herzlichen Dank.</p>
+    <% form_for([@place, @comment]) do |f| %>
+        <div class="span-13">
+          <%= f.error_messages %>
+          <%= fckeditor_textarea('comment', 'text', :toolbarSet => 'Comment', :width => '500px', :height => '250px') %>
+          <script>
+          var RecaptchaOptions = {
+            lang : 'de',
+            theme : 'white',
+            tabindex : 2
+          };
+          </script>
+	  <%= recaptcha_tags %>
+          <%= f.submit 'Speichern' %>
+	  <br/>
+        </div>
+
+        <div class="span-2 push-1 last">
+          &nbsp;
+        </div>
+    <% end %>
+  </div>
+</div>

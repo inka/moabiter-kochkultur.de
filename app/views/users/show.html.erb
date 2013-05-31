@@ -1,0 +1,15 @@
+<div style="padding:10px;">
+    <h1><%= h "Account: #{@user.login}" %></h1>
+
+    <%- if current_user.is_admin? || current_user == @user -%>
+        <%= button_to 'Passwort ändern', :action => :change_password, :id => @user %>
+    <%- end -%>
+    <%- if current_user.is_admin? -%>
+        <%- if @user != current_user -%>
+            <%= button_to 'Löschen', { :action => :destroy, :id => @user },
+                :confirm => "Sind Sie sicher, dass Sie den Benutzer \"#{@user.login}\" löschen wollen?", :method => :delete %>
+        <%- end -%>
+    <%- end -%>
+
+    <br/><br/>
+</div>

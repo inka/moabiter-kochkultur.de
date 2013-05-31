@@ -1,0 +1,18 @@
+<div class="span-24">
+  <div class="span-5">&nbsp;</div>
+  <div class="span-14">
+    <% form_tag do -%>
+        <fieldset>
+          <p><label for="login">Login</label>
+            <%= text_field_tag(:login, nil, {:size => 40, :class => 'title'}) %></p>
+
+          <p><label for="password">Password</label>
+            <%= password_field_tag(:password, nil,  {:size => 40, :class => 'title'}) %></p>
+
+          <p><%= submit_tag 'Log in' %></p>
+        </fieldset>
+    <% end -%>
+    <!--<p>return to: <%#= session[:return_to] %></p>-->
+  </div>
+  <div class="span-5 last">&nbsp;</div>
+</div>

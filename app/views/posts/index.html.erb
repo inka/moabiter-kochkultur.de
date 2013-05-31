@@ -1,0 +1,26 @@
+<%= render :partial => 'posts/head' %>
+<div id="content_main_leftsidebar">
+    <div class="content_left post_cats">
+        <%= link_to 'Neue Anzeige', "/anzeige" %>
+        <%= render :partial => 'posts/filter' %>
+    </div>
+    <div class="content_right posts box">
+        <div class="boxheader">
+            <form action="#"><select>
+                <option value="">Sortieren nach ...</option>
+                <option value="last_updated_at">Erscheinungsdatum</option>
+            </select>
+            </form>
+        </div>
+        <h2>Aktuelle Anzeigen</h2>
+        <div class="splitter">&nbsp;</div>
+        <%= will_paginate(@posts, :previous_label => '&laquo; Vorherige Seite', :next_label => 'Nächste Seite &raquo;') %>        
+        <% for post in @posts %>
+            <%= render :partial => 'posts/post', :locals => {:post => post} %>
+            <!--<div class="splitter" style="margin:0;">&nbsp;</div>-->
+        <% end %>
+        <%= will_paginate(@posts, :previous_label => '&laquo; Vorherige Seite', :next_label => 'Nächste Seite &raquo;') %>
+        <div class="spacer" style="margin-top:30px;">&nbsp;</div>
+    </div>
+    <div class="clearFloat"/>
+</div>

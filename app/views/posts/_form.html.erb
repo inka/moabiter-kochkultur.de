@@ -1,0 +1,71 @@
+<%- form_for(@post) do |f| %>
+    <!--<div class="errors"><%= f.error_messages %></div>-->
+    <div class="post_entry no_paper">
+        <div style="margin-left:10px;">
+            <%= select 'post', 'kind', Post::KINDS, :include_blank => false %>
+            <%= select 'post', 'category', Post::CATEGORIES, :include_blank => false %>
+            &nbsp;gültig für <%= select 'post', 'expire_days', Post::EXPIRES, :include_blank => false %>
+        </div>
+        <ul>
+            <li class="o_name">
+                <label for="post_title" class="structural">Überschrift*</label>
+                <%= f.text_field :title, :size => 30, :maxlength => 50, :class => 'populate' %>
+                <span style="font-size:12px;font-weight:normal;"><%= f.error_message_on :title %></span>
+            </li>
+            <li class="o_people">
+                <label for="post_contact_person" class="structural">Ansprechpartner</label>
+                <%= f.text_field :contact_person, :size => 15, :maxlength => 30, :class => 'populate' %>
+                <span style="font-size:12px;font-weight:normal;"><%= f.error_message_on :contact_person %></span>
+            </li>
+            <li class="o_desc">
+                <label for="post_description" class="structural">Beschreibung*</label>
+                <%= f.text_area :description, :cols => 50, :rows => 7, :class => 'populate' %>
+                <span style="font-size:12px;font-weight:normal;"><%= f.error_message_on :description %></span>
+            </li>
+            <!--<li class="o_adr">-->
+            <!--<label for="post_address" class="structural">Adresse</label>-->
+            <!--<%#= f.text_area :address, :cols => 20, :rows => 5, :class => 'populate' %>-->
+            <!--<span style="font-size:12px;font-weight:normal;"><%#= f.error_message_on :address %></span>-->
+            <!--</li>-->
+            <li class="o_www">
+                <label for="post_url" class="structural">Telefonnummer</label>
+                <%= f.text_field :url, :class => 'populate' %>
+                <span style="font-size:12px;font-weight:normal;"><%= f.error_message_on :url %></span>
+            </li>
+            <li class="o_post">
+                <label for="post_email" class="structural">beispiel@kompilatkombinat.de</label>
+                <%= f.text_field :email, :class => 'populate' %>
+                <span style="font-size:12px;font-weight:normal;"><%= f.error_message_on :email %></span>
+            </li>
+        </ul>
+        <ul style="clear:both;">
+            <li class="o_desc">&nbsp;</li>
+            <li class="o_www">
+                <%- if %w[new create].index(action_name) %>
+                    <label for="post_password" class="structural">Passwort für spätere Änderungen</label>
+                    <%= f.text_field :password, :class => 'populate' %>
+                    <span style="font-size:12px;font-weight:normal;"><%= f.error_message_on :password %></span>
+                <%- end %>
+            </li>
+            <li class="o_post">
+                <%- if %w[new create].index(action_name) %>
+                    <label for="post_password_confirmation" class="structural">Passwortwiederholung</label>
+                    <%= f.text_field :password_confirmation, :class => 'populate' %>
+                    <span style="font-size:12px;font-weight:normal;"><%= f.error_message_on :password_confirmation %></span>
+                <%- else
+                  @post.password = 'Passwort erforderlich!' %>
+                    <label for="post_password" class="structural">Passwort</label>
+                    <%= f.text_field :password, :class => 'populate' %>
+                    <span style="font-size:12px;font-weight:normal;"><%= f.error_message_on :password %></span>
+                <%- end %>
+            </li>
+            <li class="o_tel">
+                <%= f.submit("Speichern", :name => 'save') %>
+                <%= f.submit('Löschen', :confirm => 'Sind sie sicher?', :name => :delete) if !%w[new create].index(action_name) %>
+                <%= link_to('Zurück', posts_path) %>
+            </li>
+        </ul>
+      <br/><br/>
+      * Bitte füllen Sie alle mit * markierten Felder aus.
+    </div>
+<%- end %>

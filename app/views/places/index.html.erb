@@ -1,0 +1,158 @@
+<%
+   if @tag
+       if @tag.tag_list.index('tag_type')
+           content_for(:title, "#{h @tag}")
+       else
+           content_for(:title, "Restaurants, Bistros und Cafés: #{h @tag}")
+       end
+   else
+       content_for(:title, "Alle Restaurants, Bistros und Cafés")
+   end
+%>
+
+<div class="span-1">&nbsp;</div>
+<div class="span-22 header">
+<h3 style="margin-bottom:0.5em;">Moabiter Gastronomie entdecken und erleben! Teilen Sie Ihre Erfahrungen mit anderen!</h3>
+Dieses Portal der <%= link_to 'Agentur StadtMuster', 'http://www.stadtmuster.de/', {:alt => 'StadtMuster Gbr'} %> informiert 
+im Rahmen des Projektes „Moabiter Kochkultur“ in Kooperation mit dem 
+<%= link_to 'Quartiersmanagement Moabit West', 'http://moabitwest.de/' %> und <%= link_to 'Stadtumbau West', 'http://www.stadtumbau-berlin.de/' %> über gastronomische Einrichtungen in Moabit.
+</div>
+<div class="span-1 last">&nbsp;</div>
+<div class="spacer"><%= image_tag 'None.gif', :width => 1, :height => 10 %></div>
+<div class="span-1">&nbsp;</div>
+<div class="span-22">
+  <div id="map" class="moabitwest">Kartenausschnitt Moabit West</div>
+
+  <div id="places" class="span-16 prepend-top left-container">
+    <table class="title">
+      <tbody><tr>
+        <td class="col1"><%= yield :title %></td>
+        <td class="col2">(<%= page_info(@places) %>)</td>
+      </tr></tbody>
+    </table>
+    <div class="pagination">
+      <%= link_to("Sortieren nach Name", params.merge(:order => 'title_' + (@order=='title_asc' ? 'dsc' : 'asc'))) if @places.total_entries > 2 %>&nbsp;&nbsp;
+      <%= link_to("Sortieren nach Bewertung", params.merge(:order => 'rating_' + (@order=='rating_dsc' ? 'asc' : 'dsc'))) if @places.total_entries > 2 %>&nbsp;&nbsp;
+      <%= link_to("Alle anzeigen", params.merge(:page => 'all'), {:class => 'show_all'}) if @places.total_pages > 1 %>
+      <%= will_paginate(@places, :container => false, :previous_label => '&laquo; Vorherige Seite', :next_label => 'Nächste Seite &raquo;') %>
+    </div>
+    <hr/>
+    <% @places.each_with_index do |place, index|
+        next if place == nil
+        global_index = @places.offset + index %>
+
+        <div class="o_entry <%= index.odd? ? 'even' : 'odd' %>" id="o<%= global_index %>"><!-- onclick="kk.show('k<%= global_index %>');">-->
+
+          <div class="span-10">
+            <h3 class="o_title"><%= global_index+1 %>. <%= link_to(place.title, place_path(place)) %></h3>
+            <table>
+              <tr>
+                <td width="150">Einordnung</td>
+                <td class="o_tags"><%= place.tag_list.join(", ") %></td>
+              </tr>
+              <%- unless place.opening_hours.blank? -%>
+                  <tr>
+                    <td>Öffnungszeiten</td>
+                    <td class="o_opening_hours"><%= h place.opening_hours %></td>
+                  </tr>
+              <%- end -%>
+              <tr>
+                <td>spezielles Mittagsangebot</td>
+                <td><%= h place.lunch_special_available %></td>
+              </tr>
+              <%- if place.lunch_special_available=='ja' && !place.lunch_special_example.blank? -%>
+                  <tr>
+                    <td>Mittagstischbeispiel</td>
+                    <td><%= h(place.lunch_special_example) %></td>
+                  </tr>
+              <%- end -%>
+            </table>
+            <%= link_to("Speiseangebot und weitere Details anzeigen", place_path(place), {:class=>'o_show'}) %>
+          </div>
+
+          <div class="span-4 push-1 last">
+            <span id="place_rating_<%= place.id %>" class="place_rating"><%= render :partial => "place_rating", :locals => {:place => place } %></span>
+            <span class="o_comments"><%= link_to(pluralize(place.comments.find_all{|c| c.activated_at}.size, 'Kommentar', 'Kommentare'), "#{place_path(place)}#comments") %></span>
+            <span class="o_address"><%= h place.address %>&nbsp;</span>
+            <span class="o_lat"><%= h place.lat %></span>
+            <span class="o_lng"><%= h place.lng %></span>
+            <span class="o_phone"><%= h place.phone %>&nbsp;</span>
+            <span class="o_www"><%= link_to("Webseite", place.url) if !place.url.blank? %>&nbsp;</span>
+            <%- if current_user && current_user.is_admin? -%>
+                <%= link_to 'Ändern', "#{edit_place_path(place)}" %>
+                <%= link_to 'Löschen', place, :confirm => 'Sicher?', :method => :delete %>
+            <%- end -%>
+            <%= picture_for(place) %>
+          </div>
+          <div class="clearFloat"></div>
+        </div>
+        <hr/>
+    <% end %>
+    <%= will_paginate(@places, :previous_label => '&laquo; Vorherige Seite', :next_label => 'Nächste Seite &raquo;') %>
+  </div>
+
+  <div class="span-5 push-1 last prepend-top right-container" style="margin-right:0;">
+    <%- if (params[:tag]) -%>
+        <div class="spacer"><%= image_tag 'None.gif', :width => 1, :height => 10 %></div>
+        <h4><%= link_to('Kategorieauswahl aufheben', places_path, :style => "margin:10px 0 10px 10px;") %></h4>
+    <%- end -%>
+
+    <span class="tagcloud">
+      <h3>Orte</h3>
+      <% tag_cloud @location_tags, %w(css1 css2 css3 css4) do |tag, css_class| %>
+          <%= link_to "#{tag.name}&nbsp;(#{tag.count})", { :action => :tag, :id => tag.name }, :class => css_class %>
+      <% end %>
+      <h3>Typen</h3>
+      <% tag_cloud @type_tags, %w(css1 css2 css3 css4) do |tag, css_class| %>
+          <%= link_to "#{tag.name}&nbsp;(#{tag.count})", { :action => :tag, :id => tag.name }, :class => css_class %>
+      <% end %>
+      <h3>Küchen</h3>
+      <% tag_cloud @kind_tags, %w(css1 css2 css3 css4) do |tag, css_class| %>
+          <%= link_to "#{tag.name}&nbsp;(#{tag.count})", { :action => :tag, :id => tag.name }, :class => css_class %>
+      <% end %>
+    </span>
+  </div>
+</div>
+<div class="span-1 last">&nbsp;</div>
+
+<div class="span-24">
+  <div class="span-1">&nbsp;</div>
+  <div class="span-21 prepend-top">
+    <%= render :partial => '/shared/logo_bar' %>
+  </div>
+</div>
+<div class="span-1 last">&nbsp;</div>
+
+<!--
+<h4>Vorspeisen</h4>
+<table>
+  <tr><td class="c1">Minestrone</td><td>2,40 €</td></tr>
+  <tr><td>Weinbergschnecken</td><td>3,20 €</td></tr>
+  <tr><td>Salat mit Schafskäse</td><td>3,80 €</td></tr>
+</table>
+<h4>Hauptgerichte</h4>
+<table>
+  <tr><td class="c1">Forelle vom Grill mit Kräuterbutter</td><td>11,80 €</td></tr>
+</table>
+<h4>Dessert</h4>
+<table>
+  <tr><td class="c1">Apfelstrudel</td><td>3,20 €</td></tr>
+  <tr><td>Tiramisu</td><td>3,60 €</td></tr>
+</table>
+<h4>Alkoholfreie Getränke</h4>
+<table>
+  <tr><td class="c1">Cola 0,2l</td><td>1,50 €</td></tr>
+  <tr><td>Cola 0,4l</td><td>2,80 €</td></tr>
+  <tr><td>Latte Macchiato</td><td>2,50 €</td></tr>
+  <tr><td>Milchkaffee</td><td>2,60 €</td></tr>
+  <tr><td>Tee</td><td>1,50 €</td></tr>
+</table>
+<h4>Alkohol</h4>
+<table>
+  <tr><td class="c1">Bier 0,3l</td><td>2,10 €</td></tr>
+  <tr><td>Bier 0,5l</td><td>3,10 €</td></tr>
+  <tr><td>Wein 0,2l</td><td>2,90 - 3,50 €</td></tr>
+  <tr><td>Wein 0,5l</td><td>6,50 - 7,70 €</td></tr>
+</table>
+<h4></h4>
+-->

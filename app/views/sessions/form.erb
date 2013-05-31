@@ -1,0 +1,15 @@
+<% form_tag '/login', {:name => "LoginForm"} do -%>
+  <label for="login">Login</label>
+  <%= text_field_tag 'login', nil, {:class => 'i-text'} %>
+  <label for="password">Passwort</label>
+  <%= password_field_tag 'password', nil, {:class => 'i-text'} %>
+  <%= submit_tag 'Log in', {:class => "i-submit", :type => "image", :src => "/de/wp-content/themes/expoeasy/images/btn-login.gif"} %>
+<% end -%>
+<%- unless flash.keys.empty? -%>
+<div id="flash">
+  <%- for kind, msg in flash -%>
+  <%- next if kind.to_sym == :debug && ::RAILS_ENV != 'development' -%>
+  <div class="<%= h kind %>"><%= h msg %></div>
+  <%- end -%>
+</div>
+<%- end -%>

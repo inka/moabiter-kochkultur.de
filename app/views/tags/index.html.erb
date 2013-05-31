@@ -1,0 +1,33 @@
+<div class="span-3">&nbsp;</div>
+<div id="tags" class="span-18">
+  
+  <h2>Täg-Verwaltung</h2>
+
+  <table class="tags">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th class="col1">Category</th>
+      <th class="col2">Tagged Objects</th>
+      <th></th>
+      <th></th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% @tags.each_with_index do |tag, index| %>
+        <tr class="<%= index.odd? ? 'even' : 'odd' %>">
+          <td><%= h tag.name %></td>
+          <td class="col1"><%= h tag.tag_list.join(", ") %></td>
+          <td class="col2"><%= link_to(tag.taggings_count, places_path(:tag => tag.name)) %></td>
+          <!--<td><%#= link_to 'Show', tag %></td>-->
+          <td><%= link_to 'Edit', edit_tag_path(tag) %></td>
+          <td><%= link_to 'Destroy', tag, :confirm => 'Are you sure?', :method => :delete %></td>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <%#= link_to 'New tag', new_tag_path %>
+
+</div>
+<div class="span-3 last">&nbsp;</div>

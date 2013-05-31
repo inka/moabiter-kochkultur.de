@@ -1,0 +1,43 @@
+<p>
+  <b>Content type:</b>
+  <%=h @picture.content_type %>
+</p>
+
+<p>
+  <b>Filename:</b>
+  <%=h @picture.filename %>
+</p>
+
+<p>
+  <b>Thumbnail:</b>
+  <%=h @picture.thumbnail %>
+</p>
+
+<p>
+  <b>Place:</b>
+  <%=h @picture.place_id %>
+</p>
+
+<p>
+  <b>Parent:</b>
+  <%=h @picture.parent_id %>
+</p>
+
+<p>
+  <b>Size:</b>
+  <%=h @picture.size %>
+</p>
+
+<p>
+  <b>Width:</b>
+  <%=h @picture.width %>
+</p>
+
+<p>
+  <b>Height:</b>
+  <%=h @picture.height %>
+</p>
+
+
+<%= link_to 'Edit', edit_picture_path(@picture) %> |
+<%= link_to 'Back', pictures_path %>

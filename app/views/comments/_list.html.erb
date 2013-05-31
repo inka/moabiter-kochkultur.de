@@ -1,0 +1,29 @@
+<hr/>
+<div id="comments">
+  <h2>Kommentare</h2>
+  <a class="shownewcomment" href="#newcomment">Neuen Kommentar schreiben</a>
+  <% place.comments.sort_by{|c| - c.id}.each_with_index do |comment, index|
+      next unless comment.activated_at || (current_user && current_user.is_admin?) %>
+
+      <div id="comment_<%= comment.id %>" class="o_comment <%= index.odd? ? 'even' : 'odd' %>">
+
+        <div class="span-12">
+          <%= comment.text %>
+        </div>
+
+        <div class="span-3 push-1 last">
+          <%- if !comment.activated_at -%>
+              <span style="color:red;">Kommentar nicht freigegeben!</span>
+          <%- end -%>
+          <span class="o_date">erstellt vor <%= time_ago_in_words(comment.created_at) %></span>
+          <%- if current_user && current_user.is_admin? -%>
+              <%= link_to 'Ändern', edit_place_comment_path(place, comment) %>
+              <%= link_to_remote('Löschen', :url => place_comment_path(place, comment), :confirm => 'Are you sure?', :method => :delete) %>
+          <%- end -%>
+        </div>
+        <div class="clearFloat"></div>
+      </div>
+      <hr/>
+  <%- end -%>
+</div>
+

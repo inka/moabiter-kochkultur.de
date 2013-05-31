@@ -1,0 +1,18 @@
+<hr/>
+<div id="comments">
+  <h2>Kommentare</h2>
+
+  <%= will_paginate(posts, :previous_label => '&laquo; Vorherige Seite', :next_label => 'Nächste Seite &raquo;') %>
+  <hr/>
+  <% posts.each_with_index do |post, index|
+      next if post == nil %>
+
+      <div class="o_comment" style="padding:0 10px;">
+        <span class="o_title" style="display:none;"><%= h post.title %></span>
+        <span class="o_description"><%= h post.description %></span>
+      </div>
+      <hr/>
+  <% end %>
+  <%= will_paginate(posts, :previous_label => '&laquo; Vorherige Seite', :next_label => 'Nächste Seite &raquo;') %>
+
+</div>

@@ -1,0 +1,9 @@
+Ihr Zugang wurde eingerichtet.
+
+  Nutzername: <%= @user.login %>
+<%# TODO: really send the password in this email? %>
+  Passwort: <%= @user.password %>
+
+Zur Aktivierung rufen Sie bitte die folgende URL auf:
+
+  <%= @url %>

@@ -1,0 +1,42 @@
+<%#--
+create_table "posts", :force => true do |t|
+  t.integer  "created_by",     :null => false
+  t.integer  "lastchange_by",  :null => false
+  t.string   "title"
+  t.string   "contact_person"
+  t.string   "url"
+  t.string   "email"
+  t.text     "address"
+  t.text     "description"
+  t.text     "comment"
+  t.datetime "expires_at"
+  t.datetime "activated_at"
+  t.datetime "created_at"
+  t.datetime "updated_at"
+end
+--%>
+<!--<div class="tinyText style_SkipStroke_1" style="height: 168px; left: 33px; position: absolute; top: 0px; width: 634px; z-index: 1;">-->
+<!--<img style="border: medium none ; height: 168px; width: 634px;" alt="" src="Fotos_files/photo_paper.png"/>-->
+<!--</div>-->
+<div class="post_entry">
+    <ul>
+        <li class="o_name"><%= h post.title %></li>
+        <li class="o_people"><%= h post.contact_person %>&nbsp;</li>
+        <li class="o_desc"><%= h post.description %></li>
+        <!--<li class="o_adr"><%#= h post.address %>&nbsp;</li>-->
+        <li class="o_www"><%#= link_to(post.url, post.url) if !post.url.blank? %><%= h post.url %>&nbsp;</li>
+        <li class="o_post"><%= mail_to(post.email, nil, :encode => "javascript") %></li>
+        <li class="o_tel black">
+            <%- if (!post.crypted_password.blank? || (current_user && current_user.is_admin?)) %>
+                <%= link_to('Ändern', edit_post_path(post)) %>
+                <%= link_to('Löschen', edit_post_path(post)) %>
+                <%#= link_to('Löschen', post, :confirm => 'Sind sie sicher?', :method => :delete) %>
+                <%#- else %>
+                <%#= link_to('Ändern', edit_post_path(post)) %>
+                <%#= link_to('Löschen', post, :confirm => 'Sind sie sicher?', :method => :delete) %>
+            <%- else %>
+                &nbsp;
+            <%- end %>
+        </li>
+    </ul>
+</div>

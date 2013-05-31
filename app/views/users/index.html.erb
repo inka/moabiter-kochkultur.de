@@ -1,0 +1,42 @@
+<div class="span-1">&nbsp;</div>
+<div id="users" class="span-22">
+      <h2>Benutzerverwaltung</h2>
+      <%= button_to 'Neuer Benutzer', :action => :new, :method => :get %><br/>
+
+      <%- if @users.empty? -%>
+          <p>Keine Benutzer gefunden.</p>
+      <%- else -%>
+          <table>
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>Email</th>
+              <th>Name</th>
+              <th>Erstellt am</th>
+              <th>Zuletzt aktiv vor</th>
+              <th>&nbsp;</th>
+            </tr>
+            </thead>
+            <tbody>
+            <%- @users.each_with_index do |user, index| -%>
+                <tr class="<%= index.odd? ? 'even' : 'odd' %>">
+                  <td><%= h user.id rescue '' %></td>
+                  <td><%= link_to "#{user.login}#{' (Administrator)' if user.is_admin?}", :action => :show, :id => user %></td>
+                  <td><%= h user.name rescue '' %></td>
+                  <td><%= user.created_at.to_s(:db).gsub(' ', '&nbsp;') %></td>
+                  <td><%= time_ago_in_words(user.last_activity_at) if user.last_activity_at %></td>
+                  <td>
+                    <%- if user != current_user -%>
+                        <%= button_to 'Löschen', { :action => :destroy, :id => user }, :method => :delete,
+                                      :confirm => "Sind Sie sicher, dass Sie den Benutzer \"#{user.login}\" löschen wollen?" %>
+                    <%- else -%>
+                        <%= image_tag "None.gif", :size => "1x22" %>
+                    <%- end -%>
+                  </td>
+                </tr>
+            <%- end -%>
+            </tbody>
+          </table>
+      <%- end -%>
+</div>
+<div class="span-1 last">&nbsp;</div>

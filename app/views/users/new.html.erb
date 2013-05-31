@@ -1,0 +1,23 @@
+<div style="padding:10px;">
+    <h1>Neuer Benutzer</h1>
+    <% form_for(@user) do |f| %>
+
+	<%= f.error_messages %>
+    	<fieldset>
+        	<p><label for="login">Email*</label><br/>
+            	<%= f.text_field :login %></p>
+	
+        	<p><label for="name">Name</label><br/>
+            	<%= f.text_field :name%></p>
+	
+        	<p><label for="password">Passwort*</label><br/>
+            	<%= f.password_field :password %></p>
+	
+        	<p><label for="password_confirmation">Passwort Wiederholung*</label><br/>
+            	<%= f.password_field :password_confirmation %></p>
+        	<br/><br/>
+        	<%= submit_tag "Anlegen", :name => "confirm" %>
+        	<%= submit_tag "Zurück", :name => "cancel" %>
+    	</fieldset>
+    <% end %>
+</div>

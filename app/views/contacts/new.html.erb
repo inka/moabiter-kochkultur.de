@@ -1,0 +1,44 @@
+<div class="span-3">&nbsp;</div>
+<div class="span-18">
+  <% form_for(@contact) do |f| %>
+      <%= f.error_messages %>
+
+      <fieldset class="prepend-top">
+        <legend>Kontaktdaten</legend>
+        <p><label>Anrede</label>
+          <label class="anrede" for="contact_salutation_herr">Herr</label>
+          <%= f.radio_button(:salutation, "Herr", {:class => "anrede"}) %>
+          <label class="anrede" for="contact_salutation_frau">Frau</label>
+          <%= f.radio_button(:salutation, "Frau", {:class => "anrede"}) %>
+        </p>
+        <p><label for="name">Name <span class="required_star">*</span></label>
+          <%= f.text_field :name %>
+        </p>
+        <p><label for="email">E-Mail Adresse <span class="required_star">*</span></label>
+          <%= f.text_field :email %>
+        </p>
+        <p><label for="nachricht">Ihre Nachricht <span class="required_star">*</span></label>
+          <%= f.text_area :message, {:rows => 8, :cols => 40} %>
+        </p>
+        <p>
+          <label>&nbsp;</label>
+          <script>
+          var RecaptchaOptions = {
+            lang : 'de',
+            theme : 'white',
+            tabindex : 2
+          };
+          </script>
+          <%= recaptcha_tags %>
+        </p>
+        <p>
+          <label>&nbsp;</label>
+          <%= f.submit "Jetzt Senden" %>
+        </p>
+        <p><label>* Pflichtfeld</label></p>
+      </fieldset>
+  <% end %>
+  <%= link_to 'Alle Nachrichten auflisten', contacts_path if current_user && current_user.is_admin? %>
+  <div class="spacer"><%= image_tag 'None.gif', :width => 1, :height => 20 %></div>
+</div>
+<div class="span-3 last">&nbsp;</div>

@@ -1,0 +1,110 @@
+<% content_for :title, @place.title %>
+
+<div class="spacer"><%= image_tag 'None.gif', :width => 1, :height => 10 %></div>
+<div class="span-1">&nbsp;</div>
+<div class="span-22">
+  <div id="map" class="moabitwest" style="height:250px;">Kartenausschnitt Moabit West</div>
+
+  <div id="place" class="span-16 prepend-top left-container">
+    <h2><%= yield :title %></h2>
+
+    <div class="o_entry" style="padding:0 10px;">
+      <span class="o_title" style="display:none;"><%= h @place.title %></span>
+      <div class="span-10">
+        <table>
+          <tr>
+            <td width="125">Einordnung</td>
+            <td class="o_tags"><%= @place.tag_list.join(", ") %></td>
+          </tr>
+          <%- unless @place.opening_hours.blank? -%>
+              <tr>
+                <td>Öffnungszeiten</td>
+                <td class="o_opening_hours"><%= h @place.opening_hours %></td>
+              </tr>
+          <%- end -%>
+          <%- unless @place.seats_inside.blank? -%>
+              <tr>
+                <td>Plätze innen</td>
+                <td><%= h @place.seats_inside %></td>
+              </tr>
+          <%- end -%>
+          <%- unless @place.seats_outside.blank? -%>
+              <tr>
+                <td>Plätze aussen</td>
+                <td><%= h @place.seats_outside %></td>
+              </tr>
+          <%- end -%>
+          <tr>
+            <td>spezielles Mittagsangebot</td>
+            <td><%= h @place.lunch_special_available %></td>
+          </tr>
+          <%- if @place.lunch_special_available=='ja' && !@place.lunch_special_example.blank? -%>
+              <tr>
+                <td>Mittagstischbeispiel</td>
+                <td><%= h(@place.lunch_special_example) %></td>
+              </tr>
+          <%- end -%>
+        </table>
+        <span class="o_description"><%= h @place.description %></span>
+      </div>
+
+      <div class="span-4 last">
+        <span id="place_rating_<%= @place.id %>" class="place_rating"><%= render :partial => "places/place_rating", :locals => {:place => @place } %></span>
+        <span class="o_comments"><%= link_to(pluralize(@place.comments.find_all{|c| c.activated_at}.size, 'Kommentar', 'Kommentare'), '#comments') %></span>
+        <span class="o_address"><%= h @place.address %>&nbsp;</span>
+        <span class="o_lat"><%= h @place.lat %></span>
+        <span class="o_lng"><%= h @place.lng %></span>
+        <span class="o_phone"><%= h @place.phone %>&nbsp;</span>
+        <span class="o_www"><%= link_to("Webseite", @place.url) if !@place.url.blank? %>&nbsp;</span>
+        <%- if current_user && current_user.is_admin? -%>
+            <%= link_to 'Ändern', "#{edit_place_path(@place)}" %>
+            <%= link_to 'Löschen', @place, :confirm => 'Sicher?', :method => :delete %>
+        <%- end -%>
+        <%= picture_for(@place) %>
+      </div>
+
+      <%- unless @place.menu_sample.blank? -%>
+          <div class="span-14 last o_menu_sample">
+            <h3>Beispiele aus der Speisekarte</h3><%= @place.menu_sample %>
+            <br/>Alle Preise ohne Gewähr. Es handelt sich hier um Beispielgerichte.
+            Zur Ansicht der vollständigen tagesaktuellen Speisekarte besuchen Sie die Webseite des Lokals oder das Lokal.
+            <br/>Letzte Aktualisierung dieses Eintrags: <%= I18n.localize(@place.updated_at) %>
+            <div class="spacer"><%= image_tag 'None.gif', :width => 1, :height => 10 %></div>
+          </div>
+      <%- end -%>
+
+    </div><!-- o_entry -->
+
+    <%= render :partial => 'comments/new', :locals => {:place => @place, :comment => @comment} %>
+    <% if !(current_user && current_user.is_admin?) && @place.comments.find_all{|c| c.activated_at}.empty? %>
+        <!--<hr/>-->
+        <div id="comments">
+          <h2>Noch keine Kommentare. <a class="shownewcomment" href="#newcomment" style="margin:10px;">Jetzt ersten Kommentar schreiben!</a></h2>
+        </div>
+    <% else %>
+        <%= render :partial => 'comments/list', :locals => {:place => @place} %>
+    <% end %>
+  </div>
+
+  <div class="span-5 push-1 last prepend-top right-container" style="margin-right:0;">
+    <div class="spacer"><%= image_tag 'None.gif', :width => 1, :height => 10 %></div>
+    <h4><%= link_to('Zurück zur Liste', places_path, :style => "margin:10px;") %></h4>
+    <span class="tagcloud">
+      <h3>Orte</h3>
+      <% tag_cloud @location_tags, %w(css1 css2 css3 css4) do |tag, css_class| %>
+          <%= link_to "#{tag.name}&nbsp;(#{tag.count})", { :action => :tag, :id => tag.name }, :class => css_class %>
+      <% end %>
+      <h3>Typen</h3>
+      <% tag_cloud @type_tags, %w(css1 css2 css3 css4) do |tag, css_class| %>
+          <%= link_to "#{tag.name}&nbsp;(#{tag.count})", { :action => :tag, :id => tag.name }, :class => css_class %>
+      <% end %>
+      <h3>Küchen</h3>
+      <% tag_cloud @kind_tags, %w(css1 css2 css3 css4) do |tag, css_class| %>
+          <%= link_to "#{tag.name}&nbsp;(#{tag.count})", { :action => :tag, :id => tag.name }, :class => css_class %>
+      <% end %>
+    </span>
+    <div class="spacer"><%= image_tag 'None.gif', :width => 1, :height => 40 %></div>
+    <h4><a class="shownewcomment" href="#newcomment" style="margin:10px;">Kommentar schreiben</a></h4>
+  </div>
+</div>
+<div class="span-1 last">&nbsp;</div>

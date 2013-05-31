@@ -1,0 +1,26 @@
+<div id="debug" onclick="this.style.height = (this.style.height == '0.5em' ? '8em' : '0.5em');">
+    <table>
+        <tr>
+            <td>Controller</td>
+            <td><%= controller.controller_name %>/<%= action_name %></td>
+        </tr>
+        <tr>
+            <td>Session</td>
+            <td><%= h session.to_hash.restrict(session.to_hash.keys - ['flash']).to_json %></td>
+        </tr>
+        <tr>
+            <td>Flash</td>
+            <td><%= h flash.to_json %></td>
+        </tr>
+        <tr>
+            <td>User</td>
+            <td><%= h current_user.name rescue '[none]' %></td>
+        </tr>
+        <%- if defined? @debug -%>
+            <tr>
+                <td>Debug:</td>
+                <td><%= h debug.inspect %></td>
+            </tr>
+        <%- end -%>
+    </table>
+</div>

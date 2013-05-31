@@ -1,0 +1,117 @@
+<%- load_google_map = %w[karte kultur].index(action_name) || (%w[places comments].index(controller.controller_name) && %w(index show create).index(action_name)) -%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <%# doesn't work = stylesheet_link_merged :all %>
+  <%= stylesheet_link_tag "blueprint/screen",
+                          "style",
+                          :media => "screen, projection",
+                          :cache => "all" %>
+  <%= stylesheet_link_tag "blueprint/print", :media => "print" %>
+  <!--[if IE 6]><%= stylesheet_link_tag 'ie6' %><![endif]-->
+  <!--[if lt IE 8]><%= stylesheet_link_tag "blueprint/ie", :media => "screen, projection" %><![endif]-->
+  <%= # combined asset file through :cache option
+      javascript_include_tag "prototype",
+                             "effects",
+                             "dragdrop",
+                             "controls",
+                             "builder",
+                             "application",
+                             :cache => "all" %>
+  <%- if %w[posts].index(controller.controller_name) && %w[new create].index(action_name) %>
+      <script type="text/javascript">Event.observe(window, 'load', function() {
+          kk.autoPopulate()
+      });</script>
+  <%- end %>
+  <%- if %w[places comments].index(controller.controller_name) && %w[show edit new create].index(action_name) %>
+      <%= javascript_include_tag :fckeditor %>
+  <%- end %>
+  <title>Moabiter Kochkultur erleben - <%= yield(:title) %></title>
+  <%= tag(:meta, :name => 'description', :content => yield(:description) || "Restaurants, Kaffeehäuser, Café, Bistro, Imbiss, Hunger, Essen, Trinken") %>
+</head>
+
+<body id="kk_body" <%= 'onload="kk.init()"' if load_google_map %>>
+<!-- header -->
+<%- if current_user && current_user.is_admin? -%>
+    <div id="top">
+      <span id="topbarContent"><p class="append-1" style="display:inline;">Adminbereich:</p>
+      </span>
+      <span id="topbarUser">
+        <%= link_to 'Benutzerverwaltung', users_path %>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <%= link_to 'Täg-Verwaltung', tags_path %>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <%= link_to 'Neues Objekt', "#{new_place_path}" %>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <%= link_to('Logout', '/logout') %>
+          </span>
+    </div>
+<%- else -%>
+    <div class="spacer"><%= image_tag 'None.gif', :width => 1, :height => 36 %></div>
+<%- end -%>
+<div class="container">
+  <div class="span-24">
+    <span id="koch">&nbsp;</span>
+    <%#= image_tag('Logo.gif', :id => 'koch') %>
+    <%= image_tag('Schriftzug.gif', :id => 'claim') %>
+    <div class="nav"><h3>
+      <%= link_to 'Essen &amp; Trinken', '/', :class => controller.controller_name=='places' && action_name=='index' ? :nav_active : :nav_inactive %>
+      <span class="nav_sep">|</span>
+      <%#= link_to 'Über uns', '/projekt', :class => action_name.index('projekt')==0 ? :nav_active : :nav_inactive %>
+      <!--<span class="nav_sep">|</span>-->
+      <%= link_to 'Kontakt', '/kontakt', :class => controller.controller_name=='contacts' ? :nav_active : :nav_inactive %>
+    </h3></div>
+    <hr style="position:relative; z-index:0;clear:none;"/>
+  </div>
+
+  <!-- main -->
+  <div class="span-24">
+    <%- unless flash.keys.empty? -%>
+        <div id="flash">
+          <%- for kind, msg in flash -%>
+              <%- next if kind.to_sym == :debug && ::RAILS_ENV != 'development' -%>
+              <div class="<%= h kind %>"><%= h msg %></div>
+          <%- end -%>
+        </div>
+    <%- end -%>
+    <!--<div id="content">-->
+
+    <%= yield :layout %>
+
+    <!--</div>-->
+  </div>
+
+  <!-- footer -->
+  <div class="span-24 last">
+    <hr class="prepend-top"/>
+    <div id="footer">
+      <%= link_to '&copy; 2009-2013 StadtMuster Gbr', 'http://www.stadtmuster.de/', {:alt => 'StadtMuster Gbr'} %>
+      <span class="nav_sep">|</span>
+      <%= link_to 'Büro sucht Arbeit. Laden sucht Idee.', 'http://beleben.de/moabitwest/' %>
+      <span class="nav_sep">|</span>
+      <%= link_to 'Impressum', 'http://www.stadtmuster.de/Impressum.html', {:alt => 'Impressum', :target => '_new'} %>
+      <span class="nav_sep">|</span>
+      <%= link_to('Feedback', '/kontakt/') %>
+      <%- unless current_user && current_user.is_admin? %>
+          <span class="nav_sep">|</span>
+          <%= link_to('Login', login_path) %>
+      <%- end %>
+    </div>
+  </div>
+</div>
+<div class="spacer"><%= image_tag 'None.gif', :width => 1, :height => 36 %></div>
+<%- if ::RAILS_ENV == 'development' -%>
+    <%#= render :partial => 'layouts/debug' %>
+<%- end -%>
+<%- if ::RAILS_ENV == 'production' -%>
+    <%= render :partial => 'layouts/analytics' %>
+<%- end -%>
+<%- if load_google_map %>
+    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAA_GbY_QkQO7FpSpCc35mmQxTLCiDsl_FmFxgtzkRQd00RMMjugRTgBgW3XTutBu3yzmV3s_1kF_kHwg"
+            type="text/javascript"></script>
+    <%= javascript_include_tag 'karte.js' %>
+<%- end %>
+</body>
+</html>

@@ -1,0 +1,20 @@
+<%= render :partial => 'posts/head' %>
+<div id="content_main_leftsidebar">
+    <div class="content_left post_cats">
+        <%= link_to 'Anzeigenliste', "/anzeigen" %>
+        <%= render :partial => 'posts/filter' %>
+    </div>
+    <div class="content_right posts">
+        <div class="boxheader">&nbsp;</div>
+        <div id="boxheadline"><%= 'Neue' if action_name=='new' %> Anzeige</div>
+        <div class="splitter">&nbsp;</div>
+        <%= render :partial => 'posts/form' %>
+        <%# for post in @posts %>
+        <%#= render :partial => 'post', :locals => {:post => post} %>
+        <!--<div class="splitter">&nbsp;</div>-->
+        <%# end %>
+        <br/>
+        <div class="spacer" style="margin-top:30px;">&nbsp;</div>
+    </div>
+    <div class="clearFloat"/>
+</div>

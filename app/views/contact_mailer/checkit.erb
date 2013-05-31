@@ -1,0 +1,11 @@
+Hallo StadtMuster, auf der Webseite <%=SITE_URL%> wurde ein neuer Kommentar geschrieben:
+
+Lokalität: <%= SITE_URL + url_for(@place) %>
+Kommentar:
+<%= @comment.text %>
+
+
+--
+<%= @place.inspect %>
+
+<%= @comment.inspect %>

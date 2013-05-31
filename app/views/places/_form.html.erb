@@ -1,0 +1,92 @@
+<% form_for(@place, :html => { :multipart => true }) do |f| %>
+    <%= f.error_messages %>
+    <fieldset>
+      <p>
+        <%= f.label :title, "Titel *" %>
+        <%= f.text_field :title, :size => 50, :class => "title" %>
+      </p>
+
+      <p>
+        <%= f.label :tag_list %>
+        <%= f.text_field :tag_list, :size => 50, :class => "title" %>
+      </p>
+
+      <p>
+        <%= f.label :opening_hours %>
+        <%= f.text_area :opening_hours, :cols => 20, :rows => 3, :style => "height:auto;" %>
+      </p>
+
+      <p>
+        <%= f.label :lunch_special_available %>
+        <%= f.select :lunch_special_available, ["ja", "nein"] %>
+      </p>
+
+      <p>
+        <%= f.label :lunch_special_example %>
+        <%= f.text_area :lunch_special_example, :cols => 20, :rows => 3, :style => "height:auto;" %>
+      </p>
+
+      <p>
+        <%= f.label :seats_inside %>
+        <%= f.text_field :seats_inside, :size => 50 , :class => "title" %>
+      </p>
+
+      <p>
+        <%= f.label :seats_outside %>
+        <%= f.text_field :seats_outside, :size => 50 , :class => "title" %>
+      </p>
+
+      <p>
+        <%= f.label :address, "Adresse *" %>
+        <%= f.text_field :address, :size => 50, :class => "title" %>
+      </p>
+
+      <p>
+        <%= f.label :phone %>
+        <%= f.text_field :phone, :size => 50 , :class => "title" %>
+      </p>
+
+      <p>
+        <%= f.label :url %>
+        <%= f.text_field :url, :size => 50 , :class => "title" %>
+      </p>
+
+      <p>
+        <%= f.label :email %>
+        <%= f.text_field :email, :size => 50 , :class => "title" %>
+      </p>
+      <p>
+        <%= f.label :menu_sample %>
+        <%#= f.text_area :menu_sample %>
+        <%= fckeditor_textarea(:place, :menu_sample, :toolbarSet => 'SimpleTable', :width => '550px', :height => '600px') %>
+      </p>
+
+<!--
+      <p>
+        <%#= f.label :description %>
+        <%#= f.text_area :description %>
+      </p>
+-->
+
+      <p>
+        <%= f.label :picture, "Bild" %>
+        <%= file_field_tag :img_file, :size => 60 %><br/>
+        <%- if !@place.pictures.empty? -%>
+            <label>&nbsp;</label>
+            <span style="display:block;margin-top:5px;">
+              <%= picture_for(@place) %>&nbsp; Aktuelles Bild wird überschrieben.
+            </span>
+        <%- end -%>
+      </p>
+
+      <p>
+        <%- if action_name=='edit' -%>
+            <%= f.submit 'Update' %>
+            <%= link_to('Abbrechen', "#{place_path(@place)}") %> |
+        <%- else -%>
+            <%= f.submit 'Speichern' %>
+        <%- end -%>
+        <%= link_to('Zurück zur Liste', {:action => :index}) %>            
+      </p>
+    </fieldset>
+<% end %>

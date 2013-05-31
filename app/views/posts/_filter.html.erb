@@ -1,0 +1,16 @@
+<div class="prepend-top"><h3>Kategorien</h3>
+    <ul>
+        <li>Alle Kategorien (<%= @posts.length %>)</li>
+        <% Post::CATEGORIES.each { |cat| %>
+            <li class="sub"><%= cat %> (<%= @posts.map(&:category).grep(cat).length %>)</li>
+        <%- } %>
+    </ul>
+</div>
+<div class="prepend-top"><h3>Anzeigentyp</h3>
+    <ul>
+        <li>Alle Typen (<%= @posts.length %>)</li>
+        <% Post::KINDS.each { |kind| %>
+            <li class="sub"><%= kind %> (<%= @posts.map(&:kind).grep(kind).length %>)</li>
+        <%- } %>
+    </ul>
+</div>

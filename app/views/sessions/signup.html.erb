@@ -1,0 +1,22 @@
+<h1>Registrierung</h1>
+<%# error_messages_for 'user' %>
+<div class="form-edit">
+    <% form_for :user, :url => { :controller => 'users', :action => 'signup', :id => @user } do |f| %>
+
+        <p><label for="login">Email*</label><br/>
+            <%= f.text_field :login %>&nbsp;</p>
+
+        <p><label for="name">Name</label><br/>
+            <%= f.text_field :name %>&nbsp;</p>
+
+        <p><label for="password">Passwort*</label><br/>
+            <%= f.password_field :password %>&nbsp;</p>
+
+        <p><label for="password_confirmation">Passwort Wiederholung*</label><br/>
+            <%= f.password_field :password_confirmation %>&nbsp;</p>
+        <br/><br/>
+        <%= submit_tag "Anmelden", :name => "confirm" %>
+        <%#= submit_tag "Zurück", :name => "cancel" %>
+
+    <% end -%>
+</div>

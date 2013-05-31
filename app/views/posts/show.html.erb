@@ -1,0 +1,44 @@
+<p>
+  <b>Art:</b>
+  <%=h @post.kind %>
+</p>
+
+<p>
+  <b>Kategorie:</b>
+  <%=h @post.category %>
+</p>
+
+<p>
+  <b>Title:</b>
+  <%=h @post.title %>
+</p>
+
+<p>
+  <b>Ansprechpartner:</b>
+  <%=h @post.contact_person %>
+</p>
+
+<p>
+  <b>Beschreibung:</b>
+  <%=h @post.description %>
+</p>
+
+<!--
+<p>
+  <b>Adresse:</b>
+  <%=h @post.address %>
+</p>
+-->
+
+<p>
+  <b>Url:</b>
+  <%=h @post.url %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%= mail_to(@post.email, nil, :encode => "javascript") %>
+</p>
+
+<%= link_to 'Ändern', edit_post_path(@post) %> |
+<%= link_to 'Zurück', nice_posts_path %>

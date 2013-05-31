@@ -1,0 +1,31 @@
+<div class="span-24">
+  <div class="span-2">&nbsp;</div>
+  <div class="span-20">
+
+    <h2>Kommentar für <%= h @place.title %></h2>
+
+    <% form_for([@place, @comment]) do |f| %>
+        <%= f.error_messages %>
+        <fieldset>
+
+          <p>
+            <%= f.label :text, "Text" %>
+            <%= fckeditor_textarea(:comment, :text, :toolbarSet => 'Comment', :width => '500px', :height => '400px') %>
+            <%#= f.text_area :text %>
+          </p>
+
+          <p>
+            <%= f.label :activated_at, "Aktivieren" %>
+            <%= f.check_box :activated_at %>
+          </p>
+
+          <p>
+            <label>&nbsp;</label>
+            <%= f.submit 'Speichern' %>&nbsp;&nbsp;<%= link_to 'Zurück', place_path(@place) %>
+          </p>
+        </fieldset>
+    <% end %>
+
+  </div>
+  <div class="span-2 last">&nbsp;</div>
+</div>

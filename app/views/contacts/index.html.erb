@@ -1,0 +1,26 @@
+<h1>Alle Kontaktnachrichten</h1>
+
+<table>
+  <tr>
+    <th>Anrede</th>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Nachricht</th>
+  </tr>
+
+<% for contact in @contacts %>
+  <tr>
+    <td><%=h contact.salutation %></td>
+    <td><%=h contact.name %></td>
+    <td><%= mail_to(contact.email, nil, :encode => "javascript") %></td>
+    <td><%=h contact.message %></td>
+    <td><%= link_to 'Show', contact %></td>
+    <td><%= link_to 'Edit', edit_contact_path(contact) %></td>
+    <td><%= link_to 'Destroy', contact, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Neue Kontaktnachricht', new_contact_path %>
