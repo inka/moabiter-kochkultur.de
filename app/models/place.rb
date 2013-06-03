@@ -28,11 +28,10 @@ class Place < ActiveRecord::Base
   acts_as_taggable
   # http://geokit.rubyforge.org/readme.html
   acts_as_mappable :default_units => :kms
-  # SEO stuff
-  #has_friendly_id :title, :use_slug => true, :strip_diacritics => true
-  has_friendly_id :title, :use_slug => true do |text|
-    Slug::normalize(Slug::strip_diacritics(text)) + "-Berlin-Moabit"
-  end
+  extend FriendlyId
+  friendly_id :title, :use => :slugged# do |text|
+#    Slug::normalize(Slug::strip_diacritics(text)) + "-Berlin-Moabit"
+#  end
 
   before_validation :geocode_address
 

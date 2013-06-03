@@ -1,7 +1,2 @@
 Use this README file to introduce your application and point to useful places in the API for learning more.
 Run "rake doc:app" to generate API documentation for your models, controllers, helpers, and libraries.
-
-# list all not activated SPAM comments
-Comment.all.find_all{|c|c.activated_at.nil?}.each{|c| puts c.text; puts c.user.name}
-# and delete them
-Comment.all.find_all{|c|c.activated_at.nil?}.each{|c| u=c.user;c.destroy;u.destroy}

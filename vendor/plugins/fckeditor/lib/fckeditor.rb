@@ -1,7 +1,7 @@
 # Fckeditor
 module Fckeditor
   PLUGIN_NAME = 'fckeditor'
-  PLUGIN_PATH = "#{RAILS_ROOT}/vendor/plugins/#{PLUGIN_NAME}"
+  PLUGIN_PATH = "#{Rails.root}/vendor/plugins/#{PLUGIN_NAME}"
   PLUGIN_PUBLIC_PATH = "#{PLUGIN_PATH}/public"
   PLUGIN_CONTROLLER_PATH = "#{PLUGIN_PATH}/app/controllers"  
   PLUGIN_VIEWS_PATH = "#{PLUGIN_PATH}/app/views"  
@@ -35,9 +35,7 @@ module Fckeditor
         inputs = "<textarea id='#{id}' #{cols} #{rows} name='#{object}[#{field}]'>#{value}</textarea>\n"
       end
       
-      # bugfix: http://github.com/salicio/fckeditor/commit/fcf8fbee8cfad3a3df0df50172e448727909ccb9
-      # js_path = "#{request.relative_url_root}/javascripts"
-      js_path = "#{ActionController::Base.relative_url_root}/javascripts"
+      js_path = "#{request.relative_url_root}/javascripts"
       base_path = "#{js_path}/fckeditor/"
       return inputs <<
         javascript_tag("var oFCKeditor = new FCKeditor('#{id}', '#{width}', '#{height}', '#{toolbarSet}');\n" <<

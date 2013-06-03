@@ -3,7 +3,7 @@ require 'tmpdir'
 
 class FckeditorController < ActionController::Base
   UPLOADED = "/uploads"
-  UPLOADED_ROOT = RAILS_ROOT + "/public" + UPLOADED
+  UPLOADED_ROOT = Rails.root + "/public" + UPLOADED
   MIME_TYPES = [
     "image/jpg",
     "image/jpeg",
@@ -133,9 +133,7 @@ class FckeditorController < ActionController::Base
   end
   
   def upload_directory_path
-    # bugfix: http://github.com/salicio/fckeditor/commit/fcf8fbee8cfad3a3df0df50172e448727909ccb9
-    # uploaded = request.relative_url_root.to_s+"#{UPLOADED}/#{params[:Type]}"
-    uploaded = ActionController::Base.relative_url_root.to_s+"#{UPLOADED}/#{params[:Type]}"
+    uploaded = request.relative_url_root.to_s+"#{UPLOADED}/#{params[:Type]}"
     "#{uploaded}#{params[:CurrentFolder]}"
   end
   
@@ -151,7 +149,7 @@ class FckeditorController < ActionController::Base
   
   def check_path(path)
     exp_path = File.expand_path path
-    if exp_path !~ %r[^#{File.expand_path(RAILS_ROOT)}/public#{UPLOADED}]
+    if exp_path !~ %r[^#{File.expand_path(Rails.root)}/public#{UPLOADED}]
       @errorNumber = 403
       throw Exception.new
     end

@@ -1,5 +1,5 @@
 # version
-APP_VERSION = '1.1 (2009-10-23)'
+APP_VERSION = '1.2 (2013-06-03)'
 
 SESSION_TIMEOUT = 48.hours
 
@@ -16,8 +16,8 @@ ActionMailer::Base.smtp_settings = {
 }
 
 #I18n.load_path << "#{RAILS_ROOT}/config/locales"
-I18n.load_path += Dir[File.join(RAILS_ROOT, 'config', 'locales', '*.{rb,yml}')]
-I18n.default_locale = "de"
+#I18n.load_path += Dir[File.join(RAILS_ROOT, 'config', 'locales', '*.{rb,yml}')]
+#I18n.default_locale = "de"
 
 # monkey patch because of mongrel 1.1.5 bug in
 #           headers.each { |k, vs|

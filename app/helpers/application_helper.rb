@@ -1,28 +1,25 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
-  # http://github.com/jviney/acts_as_taggable_on_steroids/tree/master
-  include TagsHelper
-
   # see origin page_entries_info in will_paginate view_helpers
-  def page_info(collection, options = {})
-    entry_name = options[:entry_name] || 'Eintrag'
-#      (collection.empty?? 'entry' : collection.first.class.name.underscore.sub('_', ' '))
-
-    if collection.total_pages < 2
-      case collection.size
-      when 0; "kein #{entry_name.pluralize} gefunden"
-      when 1; "1 #{entry_name}"
-      else;   "alle #{collection.size} #{entry_name.pluralize}"
-      end
-    else
-      %{%d-%d von %d} % [
-        collection.offset + 1,
-        collection.offset + collection.length,
-        collection.total_entries
-      ]
-    end
-  end
+#  def page_info(collection, options = {})
+#    entry_name = options[:entry_name] || 'Eintrag'
+##      (collection.empty?? 'entry' : collection.first.class.name.underscore.sub('_', ' '))
+#
+#    if collection.nil? or collection.total_pages < 2
+#      if collection.nil? or collection.size = 0
+#        "kein #{entry_name.pluralize} gefunden"
+#      else
+#        "1 #{entry_name}"
+#      end
+#    else
+#      %{%d-%d von %d} % [
+#        collection.offset + 1,
+#        collection.offset + collection.length,
+#        collection.total_entries
+#      ]
+#    end
+#  end
 
   # next stuff as template for improved acts_as_rated integration with multiple ratable models
   # http://blog.wolfman.com/articles/2007/6/23/developing-a-social-networking-site-part-2-rating-stars
