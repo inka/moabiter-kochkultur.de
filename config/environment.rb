@@ -29,12 +29,12 @@ Rails::Initializer.run do |config|
   # config.gem "bj"
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "aws-s3", :lib => "aws/s3"
-#  config.gem 'sqlite3-ruby'
+  # config.gem 'sqlite3-ruby'
   #config.gem 'mislav-will_paginate', :version => '~> 2', :lib => 'will_paginate', :source => 'http://gems.github.com'
-  config.gem 'will_paginate', :version => '~> 2.3.11', :source => 'http://gemcutter.org'
-  config.gem 'mini_magick'
-  config.gem 'friendly_id'
-  config.gem 'geokit'
+  #config.gem 'will_paginate', :version => '~> 2.3.11', :source => 'http://gemcutter.org'
+  #config.gem 'mini_magick'
+  #config.gem 'friendly_id'
+  #config.gem 'geokit'
   #config.gem "ambethia-recaptcha", :lib => "recaptcha/rails", :source => "http://gems.github.com"
   #config.gem 'justinfrench-formtastic', :lib => 'formtastic', :source => 'http://gems.github.com'
 
